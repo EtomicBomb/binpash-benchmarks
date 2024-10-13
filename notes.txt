@@ -1,0 +1,83 @@
+I think the <benchmark>/input directory should be empty except for the input
+data. This will allow users to mount or symlink the external data locations to
+this directory without having to worry about the directory being polluted with
+scripts, hashes, etc. The <benchmark>/input directory should be safe to replace
+with a symlink.
+
+I have been working with the following directory structure.
+
+<benchmark>
+> input.sh
+> run.sh
+> verify.sh
+> cleanup.sh
+> hashes/
+> input/
+> results/
+> scripts/
+
+I think that `<benchmark>/input.sh` should still download files from their original sources
+and place the downloaded files in <benchmark>/input.
+
+I think we should also distribute the input data separately. The more locations
+users will have to go to fetch data, the more likely it is that one of the data
+sources will rot. It also makes mounting the data into containers easier. I
+have been working with this set up.
+
+```
+$ tree .
+.
+├── analysis-logs
+│   └── access.log
+├── analysis-pcap
+│   ├── 201011271400.dump
+│   └── 2018-07-20-17-31-20-192.168.100.108.pcap
+├── checksum.md5
+└── provenance.json
+```
+
+```
+$ cat checksum.md5 
+528bcc8e31b4c376ab66479e7a370e6b  analysis-logs/access.log
+2f0f932a8a820babece92f5902e59489  analysis-pcap/201011271400.dump
+89695f15b213510488266472b2f20624  analysis-pcap/2018-07-20-17-31-20-192.168.100.108.pcap
+```
+
+```
+$ cat provenance.json 
+[
+    {
+        "path": "analysis-logs/access.log",
+        "source": {
+            "accessed-on": "2024-10-12",
+            "url": "https://www.kaggle.com/datasets/eliasdabbas/web-server-access-logs",
+            "source": {
+                "url": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/3QBYB5"
+            }
+        }
+    },
+    {
+        "path": "analysis-pcap/201011271400.dump",
+        "source": {
+            "accessed-on": "2024-10-12",
+            "url": "http://mawi.wide.ad.jp/mawi/samplepoint-F/2010/201011271400.dump.gz"
+        }
+    },
+    {
+        "path": "analysis-pcap/2018-07-20-17-31-20-192.168.100.108.pcap",
+        "source": {
+            "accessed-on": "2024-10-12",
+            "url": "https://mcfp.felk.cvut.cz/publicDatasets/IoT-23-Dataset/IndividualScenarios/CTU-IoT-Malware-Capture-7-1/2018-07-20-17-31-20-192.168.100.108.pcap"
+        }
+    }
+]
+```
+
+I have been running the docker container like this:
+
+```
+docker run -it \
+    --mount type=bind,source=/home/ethan/school/systems/bench-dataset/benchmarks/analysis-logs,target=/benchmarks/analysis-logs/input,readonly \
+    --mount type=bind,source=/home/ethan/school/systems/bench-dataset/benchmarks/analysis-pcap,target=/benchmarks/analysis-pcap/input,readonly \
+    bench1
+```
