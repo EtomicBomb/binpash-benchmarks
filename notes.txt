@@ -81,3 +81,6 @@ docker run -it \
     --mount type=bind,source=/home/ethan/school/systems/bench-dataset/benchmarks/analysis-pcap,target=/benchmarks/analysis-pcap/input,readonly \
     bench1
 ```
+
+run.sh outputs to stdout the subbenchmark name and an exit code
+main.sh in thee root checks the exit code and runs verify.sh
