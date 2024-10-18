@@ -14,4 +14,5 @@ if [ $? -eq 0 ]; then
     echo "Valid"
 else
     echo "Invalid"
+    exit 1
 fi
