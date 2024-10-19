@@ -1,23 +1,26 @@
 #!/bin/bash
 
 REPO_TOP=$(git rev-parse --show-toplevel)
-
 eval_dir="${REPO_TOP}/media-conv"
-results_dir="${eval_dir}/results"
-scripts_dir="${eval_dir}/scripts"
 input_dir="${eval_dir}/input"
 
-wget https://atlas-group.cs.brown.edu/data/wav.zip -O $input_dir/wav.zip
-unzip wav.zip -d wav_full
+DATA_LINK=https://atlas-group.cs.brown.edu/data/wav.zip
+ZIP_DST=$input_dir/wav.zip
+OUT_DIR=$input_dir/wav_full
+wget $DATA_LINK -O $ZIP_DST
+unzip $ZIP_DST -d $OUT_DIR
+rm $ZIP_DST
 
-JPG_DATA_LINK=https://atlas-group.cs.brown.edu/data/full/jpg.zip
-wget $JPG_DATA_LINK -O jpg_full.zip
-unzip jpg_full.zip -d jpg_full
-echo "JPG Generated"
-rm jpg_full.zip
+DATA_LINK=https://atlas-group.cs.brown.edu/data/full/jpg.zip
+ZIP_DST=$input_dir/jpg_full.zip
+OUT_DIR=$input_dir/jpg_full
+wget $DATA_LINK -O $ZIP_DST
+unzip $ZIP_DST -d $OUT_DIR
+rm $ZIP_DST
 
-JPG_DATA_LINK=https://atlas-group.cs.brown.edu/data/small/jpg.zip
-wget $JPG_DATA_LINK -O jpg_small.zip
-unzip jpg_small.zip -d jpg_small
-echo "JPG_small Generated"
-rm jpg_small.zip
+DATA_LINK=https://atlas-group.cs.brown.edu/data/small/jpg.zip
+ZIP_DST=$input_dir/jpg_small.zip
+OUT_DIR=$input_dir/jpg_small
+wget $DATA_LINK -O $ZIP_DST
+unzip $ZIP_DST -d $OUT_DIR
+rm $ZIP_DST
