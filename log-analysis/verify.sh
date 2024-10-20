@@ -8,17 +8,17 @@ hashes_dir="${eval_dir}/hashes"
 results_dir="${eval_dir}/results"
 mkdir -p $results_dir
 
-#md5sum pcaps.full/* > /benchmarks/log-analysis/hashes/pcaps.full.md5sum
-#md5sum nginx.full/* > /benchmarks/log-analysis/hashes/nginx.full.md5sum
-#md5sum pcaps.small/* > /benchmarks/log-analysis/hashes/pcaps.small.md5sum
-#md5sum nginx.small/* > /benchmarks/log-analysis/hashes/nginx.small.md5sum
-
 suffix=".full"
 if [[ "$@" == *"--small"* ]]; then
     suffix=".small"
 fi
 
 cd $results_dir # md5sum computes paths relative to cd
+if [[ "$@" == *"--generate"* ]]; then
+    md5sum pcaps$suffix/* > $hashes_dir/pcaps$suffix.md5sum
+    md5sum nginx$suffix/* > $hashes_dir/nginx$suffix.md5sum
+fi
+
 okay=0
 if ! md5sum --check --quiet $hashes_dir/pcaps$suffix.md5sum; then
     okay=1

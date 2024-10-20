@@ -3,14 +3,24 @@
 REPO_TOP=$(git rev-parse --show-toplevel)
 
 eval_dir="${REPO_TOP}/analysis-logs"
-results_dir="${eval_dir}/results"
 input_dir="${eval_dir}/input"
-checksum="${eval_dir}/hashes/results.md5"
+hashes_dir="${eval_dir}/hashes"
+results_dir="${eval_dir}/results"
+mkdir -p $results_dir
 
-if [ "$(md5sum $results_dir/* | awk '{print $1}')" == "$(cat $checksum)" ];
-then
-    echo "Valid"
-else
-    echo "Invalid"
-    exit 1
+suffix=".full"
+if [[ "$@" == *"--small"* ]]; then
+    suffix=".small"
 fi
+
+cd $results_dir # md5sum computes paths relative to cd
+if [[ "$@" == *"--generate"* ]]; then
+    md5sum results$suffix/* > $hashes_dir/results$suffix.md5sum
+fi
+
+okay=0
+if ! md5sum --check --quiet $hashes_dir/results$suffix.md5sum; then
+    okay=1
+    echo "img_convert $suffix failed verification"
+fi
+exit $okay

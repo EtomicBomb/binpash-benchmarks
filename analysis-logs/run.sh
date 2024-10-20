@@ -10,4 +10,11 @@ mkdir -p $results_dir
 
 export INPUT=${input_dir}/access.log
 
-$scripts_dir/nginx.sh > "$results_dir/$(basename "$script").out"
+suffix=".full"
+if [[ "$@" == *"--small"* ]]; then
+    suffix=".small"
+fi
+
+log_dir="$results_dir/results$suffix"
+mkdir -p $log_dir
+$scripts_dir/nginx.sh > $log_dir/out
