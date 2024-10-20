@@ -14,6 +14,7 @@ if [[ "$@" == *"--small"* ]]; then
 fi
 
 cd $results_dir # md5sum computes paths relative to cd
+
 if [[ "$@" == *"--generate"* ]]; then
     md5sum pcaps$suffix/* > $hashes_dir/pcaps$suffix.md5sum
     md5sum nginx$suffix/* > $hashes_dir/nginx$suffix.md5sum
