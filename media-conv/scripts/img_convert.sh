@@ -9,7 +9,7 @@ pure_func () {
 }
 export -f pure_func
 
-for i in $1/*.jpg 
+for i in $1/*;
 do 
     out="$2/$(basename -- $i)"
     cat $i | pure_func > $out

@@ -11,14 +11,17 @@ if [[ "$@" == *"--small"* ]]; then
 fi
 
 cd $results_dir # md5sum computes paths relative to cd
-okay=0
-if ! md5sum --check --quiet $hashes_dir/img_convert$suffix.md5sum; then
-    okay=1
-    echo "img_convert $suffix failed verification"
-fi
-if ! md5sum --check --quiet $hashes_dir/to_mp3$suffix.md5sum; then
-    okay=1
-    echo "to_mp3 $suffix failed verification"
+
+if [[ "$@" == *"--generate"* ]]; then
+    md5sum img_convert$suffix/* > $hashes_dir/img_convert$suffix.md5sum
+    md5sum to_mp3$suffix/* > $hashes_dir/to_mp3$suffix.md5sum
+    exit 0
 fi
 
-exit $okay
+bench=img_convert
+md5sum --check --quiet --status $hashes_dir/$bench$suffix.md5sum 
+echo $bench $?
+
+bench=to_mp3
+md5sum --check --quiet --status $hashes_dir/$bench$suffix.md5sum
+echo $bench $?

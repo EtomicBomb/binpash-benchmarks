@@ -7,13 +7,13 @@ results_dir="${eval_dir}/results"
 scripts_dir="${eval_dir}/scripts"
 mkdir -p $results_dir
 
-img_convert_input="$input_dir/jpg_full"
-to_mp3_input="$input_dir/wav_full/wav"
+img_convert_input="$input_dir/jpg_full/jpg"
+to_mp3_input="$input_dir/wav_full"
 suffix=".full"
 
 if [[ "$@" == *"--small"* ]]; then
     img_convert_input="$input_dir/jpg_small/jpg"
-    # TODO: mp3 small
+    to_mp3_input="$input_dir/wav_small"
     suffix=".small"
 fi
 
