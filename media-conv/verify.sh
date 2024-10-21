@@ -18,10 +18,10 @@ if [[ "$@" == *"--generate"* ]]; then
     exit 0
 fi
 
-bench=img_convert
-md5sum --check --quiet --status $hashes_dir/$bench$suffix.md5sum 
+bench=img_convert$suffix
+md5sum --check --quiet --status $hashes_dir/$bench.md5sum
 echo $bench $?
 
-bench=to_mp3
-md5sum --check --quiet --status $hashes_dir/$bench$suffix.md5sum
+bench=to_mp3$suffix
+md5sum --check --quiet --status $hashes_dir/$bench.md5sum
 echo $bench $?
