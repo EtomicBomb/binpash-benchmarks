@@ -21,6 +21,6 @@ fi
 okay=0
 if ! md5sum --check --quiet $hashes_dir/results$suffix.md5sum; then
     okay=1
-    echo "img_convert $suffix failed verification"
+    echo "analysis-logs $suffix failed verification"
 fi
 exit $okay
