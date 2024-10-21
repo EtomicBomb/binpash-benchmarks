@@ -1,22 +1,37 @@
 #!/bin/bash
 
-REPO_TOP=$(git rev-parse --show-toplevel)
-eval_dir="${REPO_TOP}/unix50"
-input_dir="${eval_dir}/input"
+cd "$(realpath $(dirname "$0"))"
+mkdir -p inputs
+cd inputs
 
-mkdir -p $input_dir/small
-mkdir -p $input_dir/full
+inputs=(1 2 3 4 5 6 7 8 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9 10 11 12)
 
-for input in 1 10 11 12 2 3 4 5 6 7 8 9.1 9.2 9.3 9.4 9.5 9.6 9.7 9.8 9.9
+for input in ${inputs[@]}
 do
-    content="$(curl --insecure "https://atlas-group.cs.brown.edu/data/unix50/${input}.txt")"
 
-    small="$input_dir/small/${input}_1M.txt"
-    yes "$content" | head -c 1048576 > $small
+    echo "Processing ${input}.txt"
 
-    filename="$input_dir/full/${input}_3G.txt"
-    truncate -s0 $filename
-    for i in {0..1000}; do # can change this back to 3000 for 3G
-        cat $small >> $filename
-    done
+    if [ ! -f "${input}.txt" ]; then
+        wget --no-check-certificate "http://atlas-group.cs.brown.edu/data/unix50/${input}.txt" -q || exit 1
+    fi
+
+    # TODO: Maybe upload 1M and 3G files to the server?
+    if [ ! -f "${input}_1M.txt" ]; then
+        file_content_size=$(wc -c < "${input}.txt")
+        iteration_limit=$((1048576 / $file_content_size))
+        for (( i = 0; i < iteration_limit; i++ )); do
+            cat "${input}.txt" >> "${input}_1M.txt"
+        done
+    fi
+
+    # Skip the 3G file if the --small flag is present
+    if [[ "$@" == *"--small"* ]]; then
+        continue
+    fi
+
+    if [ ! -f "${input}_3G.txt" ]; then
+        for (( i = 0; i < 3000; i++ )); do
+            cat "${input}_1M.txt" >> "${input}_3G.txt"
+        done
+    fi
 done
