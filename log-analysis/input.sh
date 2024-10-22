@@ -8,14 +8,14 @@ REPO_TOP=$(git rev-parse --show-toplevel)
 eval_dir="${REPO_TOP}/log-analysis"
 input_dir="${eval_dir}/input"
 
-DATA_LINK=https://atlas-group.cs.brown.edu/data/pcaps.zip
-ZIP_DST=$input_dir/pcaps.zip
-wget --no-check-certificate $DATA_LINK -O $ZIP_DST
-unzip $ZIP_DST -d $input_dir
-rm $ZIP_DST
+url=https://atlas-group.cs.brown.edu/data/pcaps.zip
+zip_dst="$input_dir/pcaps.zip"
+wget --no-check-certificate $url -O "$zip_dst"
+unzip "$zip_dst" -d "$input_dir"
+rm "$zip_dst"
 
-DATA_LINK=https://atlas-group.cs.brown.edu/data/nginx.zip
-ZIP_DST=$input_dir/nginx.zip
-wget --no-check-certificate $DATA_LINK -O $ZIP_DST
-unzip $ZIP_DST -d $input_dir
-rm $ZIP_DST
+url=https://atlas-group.cs.brown.edu/data/nginx.zip
+zip_dst="$input_dir/nginx.zip"
+wget --no-check-certificate $url -O "$zip_dst"
+unzip "$zip_dst" -d "$input_dir"
+rm $zip_dst
