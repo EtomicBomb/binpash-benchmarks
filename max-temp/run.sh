@@ -7,13 +7,9 @@ results_dir="${eval_dir}/results"
 scripts_dir="${eval_dir}/scripts"
 input_dir="${eval_dir}/input"
 
-shell="/bin/bash"
-
 mkdir -p $results_dir
 
-export input_file=${input_dir}/temperatures2015.txt
+export input_file="${input_dir}/temperatures.txt"
 export results_dir
-script="${scripts_dir}/temp-analytics.sh"
 
-echo "Executing $(basename "$script")"
-$shell "$script" > "$results_dir/$(basename "$script").out"
+${scripts_dir}/temp-analytics.sh

@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        benchmark: [nlp, file-enc, unix50, media-conv, log-analytics]
+        benchmark: [nlp, file-enc, unix50, media-conv, log-analytics, max-temp]
 
     steps:
       - name: Checkout code
